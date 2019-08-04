@@ -23,8 +23,14 @@ public class MessageController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<Message> saveUser(@RequestBody Message message){
+    public ResponseEntity<Message> saveMessage(@RequestBody Message message){
         messageService.saveMessage(message);
         return ResponseEntity.ok(message);
+    }
+
+    @DeleteMapping(value = "{sender}")
+    public ResponseEntity<String> deleteBySender(@PathVariable String sender){
+        messageService.deleteBySender(sender);
+        return ResponseEntity.ok("done");
     }
 }

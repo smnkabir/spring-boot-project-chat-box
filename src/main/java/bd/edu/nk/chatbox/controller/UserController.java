@@ -28,6 +28,7 @@ public class UserController {
     @GetMapping(value = "{userName}")
     public ResponseEntity<User> getUsers(@PathVariable String userName){
         User user = userService.getUsersByName(userName);
+        System.out.println("find by id");
         return ResponseEntity.ok(user);
     }
 
@@ -35,5 +36,14 @@ public class UserController {
     public ResponseEntity<User> saveUser(@RequestBody User user){
         userService.saveUser(user);
         return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping(value = "{userName}")
+    public ResponseEntity<String> deleteUser(@PathVariable String userName){
+        boolean bool = userService.deleteByName(userName);
+        System.out.println("delete on process");
+        if(bool)
+            return ResponseEntity.ok(userName);
+        return ResponseEntity.notFound().build();
     }
 }

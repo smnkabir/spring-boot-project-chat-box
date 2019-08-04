@@ -66,6 +66,7 @@ public class Login extends VerticalLayout {
                 .bind(User::getPassword,User::setPassword);
 
         Button login = new Button("LogIn");
+        login.setAutofocus(true);
         login.addClickListener(e->{
             progressBar.setIndeterminate(true);
             progressBar.setVisible(true);
@@ -74,11 +75,16 @@ public class Login extends VerticalLayout {
                 userBinder.writeBean(user);
                 System.out.println(user);
                 if(userService.isValid(user)){
-
+                    Notification.show("Login Successfully").setPosition(Notification.Position.TOP_START);
                     ComponentUtil.setData(UI.getCurrent(),User.class,user);
                     UI.getCurrent().navigate("chat" );
                 }
-                else Notification.show("Invalid Login");
+                else{
+                    Notification.show("Invalid Credential").setPosition(Notification.Position.TOP_START);
+                    userNameField.clear();
+                    passwordField.clear();
+                }
+
 
             } catch (ValidationException ex) {
                 ex.printStackTrace();

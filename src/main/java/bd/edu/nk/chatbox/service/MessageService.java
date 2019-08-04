@@ -32,4 +32,8 @@ public class MessageService {
         messageRepository.save(message);
         return message;
     }
+
+    public void deleteBySender(String sender) {
+        messageRepository.deleteBySender(sender);
+    }
 }

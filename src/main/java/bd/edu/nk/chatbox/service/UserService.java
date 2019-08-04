@@ -32,8 +32,9 @@ public class UserService {
 
     public boolean isValid (User user){
         boolean bool;
-        User dbUser = userRepository.findById(user.getName()).get();
-        if(dbUser.equals(user))
+
+        Optional<User> dbUser = userRepository.findById(user.getName());
+        if(dbUser.isPresent() && dbUser.get().equals(user))
             bool = true;
         else
             bool = false;
@@ -49,5 +50,16 @@ public class UserService {
         else
             return null;
 
+    }
+
+    public boolean deleteByName(String userName) {
+        Optional<User> user = userRepository.findById(userName);
+        System.out.println(user);
+
+        if( user.isPresent() )
+            userRepository.deleteById(userName);
+        else
+            return false;
+        return true;
     }
 }
