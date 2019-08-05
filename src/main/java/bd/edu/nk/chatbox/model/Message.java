@@ -19,7 +19,6 @@ public class Message {
     @Id
     @GeneratedValue
     private int msgId;
-
     private String sender;
     private String msg;
 }

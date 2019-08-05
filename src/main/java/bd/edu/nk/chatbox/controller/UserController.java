@@ -21,7 +21,7 @@ public class UserController {
     @GetMapping(value = "")
     public ResponseEntity<List<User>> getUsers(){
         List<User> userList = new ArrayList<>();
-        userService.getUsers().forEach(userList :: add);
+        userList = userService.getUsers();
         return ResponseEntity.ok(userList);
     }
 

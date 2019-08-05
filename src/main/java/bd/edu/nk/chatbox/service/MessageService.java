@@ -4,11 +4,14 @@ import bd.edu.nk.chatbox.model.Message;
 import bd.edu.nk.chatbox.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class MessageService {
     @Autowired
     private MessageRepository messageRepository;
@@ -23,7 +26,7 @@ public class MessageService {
 
     public List<Message> getMessages(){
         List<Message> messageList = new ArrayList<>();
-        messageRepository.findAll().forEach(messageList::add);
+        messageList = messageRepository.findAll();
 //        messageList.forEach(System.out::println);
         return messageList;
     }
@@ -33,7 +36,18 @@ public class MessageService {
         return message;
     }
 
-    public void deleteBySender(String sender) {
-        messageRepository.deleteBySender(sender);
+    public boolean deleteBySender(String sender) {
+        Optional <List<Message>> messageList = Optional.ofNullable(messageRepository.findAllBySender(sender));
+
+        if(messageList.isPresent())
+            messageRepository.deleteBySender(sender);
+        else
+            return false;
+        return true;
+    }
+
+    public List<Message> getBySender(String sernder) {
+        List<Message> messageList = messageRepository.findAllBySender(sernder);
+        return messageList;
     }
 }

@@ -22,6 +22,12 @@ public class MessageController {
         return ResponseEntity.ok(messagesList);
     }
 
+    @GetMapping(value = "{sender}")
+    public ResponseEntity<List<Message>> getBySender(@PathVariable String sender){
+        List<Message> messagesList = messageService.getBySender(sender);
+        return ResponseEntity.ok(messagesList);
+    }
+
     @PostMapping(value = "")
     public ResponseEntity<Message> saveMessage(@RequestBody Message message){
         messageService.saveMessage(message);
@@ -29,8 +35,11 @@ public class MessageController {
     }
 
     @DeleteMapping(value = "{sender}")
-    public ResponseEntity<String> deleteBySender(@PathVariable String sender){
-        messageService.deleteBySender(sender);
-        return ResponseEntity.ok("done");
+    public ResponseEntity<String> deleteMessage(@PathVariable String sender){
+        boolean bool = messageService.deleteBySender(sender);
+        System.out.println("delete on process");
+        if(bool)
+            return ResponseEntity.ok(sender);
+        return ResponseEntity.notFound().build();
     }
 }
